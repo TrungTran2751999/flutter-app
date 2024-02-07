@@ -5,10 +5,15 @@ import '../modal/DataItems.dart';
 
 class CartBody extends StatelessWidget{
   CartBody(
-    {Key? key,
-    required this.item,
+    { Key? key,
+      required this.item,
+      required this.fun
     }):super(key: key);
   DataItems item;
+  Function fun;
+  void handleDelete(){
+    fun(item.id);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,10 +37,15 @@ class CartBody extends StatelessWidget{
                     fontWeight: FontWeight.bold
                 ),
               ),
-              const Icon(
-                Icons.delete_outline,
-                color: Colors.black,
-                size: 30,
+              GestureDetector(
+                onTap: (){
+                  handleDelete();
+               },
+                child: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.black,
+                  size: 30,
+                ),
               )],
           ),
         );

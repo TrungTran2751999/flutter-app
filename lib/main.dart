@@ -15,14 +15,23 @@ class MyStart extends StatefulWidget{
   State<StatefulWidget> createState() {
     return MyApp();
   }
-
 }
 class MyApp extends State<MyStart>{
   final List<DataItems> items = [];
   void addList(String name){
     setState(() {
-      items.add(DataItems(DateTime.now().toString(), name));
+      int index = items.isEmpty ? 0 :items.length-1;
+      items.add(DataItems(index, name));
     });
+  }
+  void removeItem(int id){
+    setState(() {
+      items.removeAt(id);
+    });
+    for(int i=0; i<items.length; i++){
+      items[i].id = i;
+    }
+    print(id);
   }
   @override
   Widget build(BuildContext context) {
@@ -43,7 +52,7 @@ class MyApp extends State<MyStart>{
      body: SingleChildScrollView(
        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
        child: Column(
-         children: items.map((item) => CartBody(item: item)).toList()
+         children: items.map((item) => CartBody(item: item, fun: removeItem,)).toList()
        ),
      ),
      floatingActionButton: FloatingActionButton(
@@ -52,7 +61,7 @@ class MyApp extends State<MyStart>{
              isScrollControlled: true,
              context: context,
              builder: (BuildContext context){
-               return ModalBottom(fun: addList);
+               return ModalBotomm(fun: addList, isVisbled:true);
              }
          );
        },

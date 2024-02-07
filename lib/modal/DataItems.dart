@@ -1,6 +1,6 @@
 // ignore: file_names
 class DataItems {
-  final String id;
+  late int id;
   final String name;
 
   DataItems(
