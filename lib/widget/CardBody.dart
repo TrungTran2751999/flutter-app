@@ -1,18 +1,38 @@
+import 'package:app/util/dto/WorkController/WorkDTO.dart';
+import 'package:app/widget/CardModal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../modal/DataItems.dart';
 
-class CartBody extends StatelessWidget{
+class CartBody extends StatefulWidget{
   CartBody(
-    { Key? key,
+      { Key? key,
+        required this.item,
+        required this.fun
+      }):super(key: key);
+  WorkDTO item;
+  Function fun;
+  @override
+  State<StatefulWidget> createState() {
+    return CartBodyLess(fun: fun, item: item);
+  }
+}
+class CartBodyLess extends State<CartBody>{
+  WorkDTO item;
+  Function fun;
+  CartBodyLess(
+    {
       required this.item,
       required this.fun
-    }):super(key: key);
-  DataItems item;
-  Function fun;
+    });
   void handleDelete(){
     fun(item.id);
+  }
+  void handleEdit(String name, int id){
+    setState(() {
+      item.name = name;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -37,16 +57,42 @@ class CartBody extends StatelessWidget{
                     fontWeight: FontWeight.bold
                 ),
               ),
-              GestureDetector(
-                onTap: (){
-                  handleDelete();
-               },
-                child: const Icon(
-                  Icons.delete_outline,
-                  color: Colors.black,
-                  size: 30,
-                ),
-              )],
+
+              Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: GestureDetector(
+                        onTap: (){
+                          handleDelete();
+                        },
+                        child: const Icon(
+                          Icons.delete_outline,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: GestureDetector(
+                        onTap: (){
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext build){
+                                return ModalBotomm(fun: handleEdit, isVisbled: true, value: item.name,type: "EDIT",);
+                              }
+                          );
+                        },
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                      ),
+                  )
+                ],
+              )]
           ),
         );
   }
