@@ -41,7 +41,7 @@ class ModalBottom extends State<ModalBotomm>{
     });
   }
   void handleEdit(){
-    fun(textEditingController.text, id);
+    fun(textEditingController.text);
     setState(() {
       isVisbled = !isVisbled;
     });

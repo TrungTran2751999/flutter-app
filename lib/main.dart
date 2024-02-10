@@ -1,6 +1,7 @@
 import 'package:app/util/dto/WorkController/WorkDTO.dart';
 import 'package:app/widget/CardBody.dart';
 import 'package:app/widget/CardModal.dart';
+import 'package:app/widget/Detai.dart';
 import 'package:flutter/material.dart';
 
 import 'modal/DataItems.dart';
@@ -19,21 +20,27 @@ class MyStart extends StatefulWidget{
 }
 class MyApp extends State<MyStart>{
   late List<WorkDTO> items = [];
+  Future<List<WorkDTO>?>? _futureWorkList;
   void addList(String name){
-    setState(() {
-      // int index = items.isEmpty ? 0 :items.length-1;
-      // items.add(DataItems(index, name));
-    });
+    final data = {
+      "name": name
+    };
+    WorkDTO.create(data)
+        .then(
+            (value) =>
+              setState(() {
+                _futureWorkList = WorkDTO.getAll();
+              })
+        );
   }
   void removeItem(int id){
-    setState(() {
-      items.removeAt(id);
-    });
-    for(int i=0; i<items.length; i++){
-      items[i].id = i;
-    }
+    WorkDTO.delete(id)
+        .then((value) =>
+          setState((){
+            _futureWorkList = WorkDTO.getAll();
+          })
+    );
   }
-  Future<List<WorkDTO>?>? _futureWorkList;
   @override
   void initState() {
     // TODO: implement initState
@@ -42,7 +49,6 @@ class MyApp extends State<MyStart>{
   }
   @override
   Widget build(BuildContext context) {
-    // WorkDTO.getAll().then((value) => items = value!);
    return Scaffold(
      appBar: AppBar(
        title: const Center(
@@ -74,7 +80,17 @@ class MyApp extends State<MyStart>{
                List<WorkDTO>? workList = snapshot.data;
                if(workList!=null){
                  return Column(
-                     children: workList.map((item) => CartBody(item: item, fun: removeItem)).toList()
+                     children: workList.map((item) =>
+                         GestureDetector(
+                           onTap: (){
+                             Navigator.push(
+                               context,
+                               MaterialPageRoute(builder: (context) => Detail(id:item)),
+                             );
+                           },
+                           child: CartBody(item: item, fun: removeItem),
+                         )
+                     ).toList()
                  );
                }
              }
