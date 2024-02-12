@@ -47,13 +47,12 @@ class CartBodyLess extends State<CartBody>{
       width: double.infinity,
       height: 74,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(top: 20,bottom: 10),
       decoration: BoxDecoration(
           color: Colors.black12,
           borderRadius: BorderRadius.circular(12)
       ),
-      child:
-      Row(
+      child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
