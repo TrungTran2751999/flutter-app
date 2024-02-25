@@ -1,18 +1,24 @@
+import 'package:app/firebase_options.dart';
+import 'package:app/home_sreen.dart';
 import 'package:app/util/dto/WorkController/WorkDTO.dart';
 import 'package:app/widget/CardBody.dart';
 import 'package:app/widget/CardModal.dart';
 import 'package:app/widget/Detai.dart';
 import 'package:app/widget/HomeView.dart';
 import 'package:app/widget/LoginView.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'modal/DataItems.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async{
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: LoginView(),
+    home: HomeScreen(),
   ));
 }
 
