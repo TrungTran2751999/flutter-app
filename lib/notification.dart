@@ -27,7 +27,7 @@ class NotificationService{
         print('denied permission');
     }
   }
-  void initLocalNotifications(RemoteMessage message) async{
+  void initLocalNotifications() async{
     var androidInitializationSettings = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
     var initalizationSetting = InitializationSettings(
@@ -35,13 +35,10 @@ class NotificationService{
         iOS: iosInitializationSettings
     );
     await _flutterLocalNotificationsPlugin.initialize(
-        initalizationSetting,
-        onDidReceiveBackgroundNotificationResponse: (payload){
-
-        }
+        initalizationSetting
     );
   }
-  Future<void> showNotification(RemoteMessage message)async{
+  void showNotification(String title, String body)async{
     AndroidNotificationChannel channel = AndroidNotificationChannel(
         Random.secure().nextInt(100000).toString(),
         'High Inportance Notification',
@@ -64,14 +61,21 @@ class NotificationService{
         android: androidNotificationDetails,
         iOS: darwinNotificationDetails
     );
-    Future.delayed(Duration.zero, (){
-      _flutterLocalNotificationsPlugin.show(
-          0,
-          message.notification!.title.toString(),
-          message.notification!.body.toString(),
-          notificationDetails
-      );
-    });
+     await _flutterLocalNotificationsPlugin.show(
+        0, // ID thông báo
+        title, // Tiêu đề thông báo
+        body, // Nội dung thông báo
+         notificationDetails,
+        payload: 'notification');
+    // Future.delayed(Duration.zero, (){
+    //   _flutterLocalNotificationsPlugin.show(
+    //       0,
+    //       message.notification!.title.toString(),
+    //       message.notification!.body.toString(),
+    //       notificationDetails
+    //   );
+    // });
+
   }
   void firebaseInit() async {
     FirebaseMessaging.onMessage.listen((message) {
@@ -79,7 +83,7 @@ class NotificationService{
         print(message.notification!.title.toString());
         print(message.notification!.body.toString());
       }
-      showNotification(message);
+      showNotification(message.notification!.title.toString(), message.notification!.body.toString());
     });
   }
   Future<String> getDeviceToken()async{
