@@ -82,6 +82,8 @@ class NotificationService{
       if (kDebugMode) {
         print(message.notification!.title.toString());
         print(message.notification!.body.toString());
+        print(message.data['id']);
+        print(message.data['name']);
       }
       showNotification(message.notification!.title.toString(), message.notification!.body.toString());
     });
@@ -95,5 +97,8 @@ class NotificationService{
       print('token reset');
       event.toString();
     });
+  }
+  void handleMessage(BuildContext context, RemoteMessage message){
+
   }
 }

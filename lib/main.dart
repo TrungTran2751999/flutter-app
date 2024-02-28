@@ -18,15 +18,16 @@ void main(List<String> args) async{
     options: DefaultFirebaseOptions.currentPlatform
   );
 
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: HomeScreen(),
   ));
 }
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
-//   await Firebase.initializeApp();
-// }
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
+  await Firebase.initializeApp();
+}
 
 
 
