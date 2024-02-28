@@ -1,13 +1,15 @@
-
 import 'dart:math';
 
+import 'package:app/message_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService{
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  static RemoteMessage remoteMessage = RemoteMessage();
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   void requestNotificationPermissision()async{
     NotificationSettings notificationSettings = await messaging.requestPermission(
@@ -27,7 +29,7 @@ class NotificationService{
         print('denied permission');
     }
   }
-  void initLocalNotifications() async{
+  void initLocalNotifications(BuildContext context) async{
     var androidInitializationSettings = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
     var initalizationSetting = InitializationSettings(
@@ -35,7 +37,10 @@ class NotificationService{
         iOS: iosInitializationSettings
     );
     await _flutterLocalNotificationsPlugin.initialize(
-        initalizationSetting
+        initalizationSetting,
+        onDidReceiveNotificationResponse: (payload){
+          handleMessage(context);
+        }
     );
   }
   void showNotification(String title, String body)async{
@@ -84,6 +89,7 @@ class NotificationService{
         print(message.notification!.body.toString());
         print(message.data['id']);
         print(message.data['name']);
+        remoteMessage = message;
       }
       showNotification(message.notification!.title.toString(), message.notification!.body.toString());
     });
@@ -98,7 +104,23 @@ class NotificationService{
       event.toString();
     });
   }
-  void handleMessage(BuildContext context, RemoteMessage message){
-
+  void handleMessage(BuildContext context){
+      String id = remoteMessage.data["id"];
+      String name = remoteMessage.data["name"];
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
+  }
+  void setupInteractMessage(BuildContext context) async {
+    //app terminateding
+    firebaseInit();
+    String id = remoteMessage.data["id"];
+    String name = remoteMessage.data["name"];
+    RemoteMessage? initalMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if(initalMessage!=null){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
+    }
+    //app inbackground
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
+    });
   }
 }

@@ -16,9 +16,10 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     notificationService.requestNotificationPermissision();
-    notificationService.initLocalNotifications();
+    notificationService.initLocalNotifications(context);
     notificationService.firebaseInit();
-    notificationService.isTokenRefresh();
+    notificationService.setupInteractMessage(context);
+    // notificationService.isTokenRefresh();
     notificationService.getDeviceToken().then((value){
      print('deviceToken');
      print(value);
