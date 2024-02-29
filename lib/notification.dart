@@ -84,14 +84,14 @@ class NotificationService{
   }
   void firebaseInit() async {
     FirebaseMessaging.onMessage.listen((message) {
-      if (kDebugMode) {
+
         print(message.notification!.title.toString());
         print(message.notification!.body.toString());
         print(message.data['id']);
         print(message.data['name']);
         remoteMessage = message;
-      }
       showNotification(message.notification!.title.toString(), message.notification!.body.toString());
+
     });
   }
   Future<String> getDeviceToken()async{
@@ -111,15 +111,22 @@ class NotificationService{
   }
   void setupInteractMessage(BuildContext context) async {
     //app terminateding
-    firebaseInit();
-    String id = remoteMessage.data["id"];
-    String name = remoteMessage.data["name"];
+    String id = "";
+    String name = "";
+
+    if(remoteMessage.data["id"]!=null){
+      id = remoteMessage.data["id"];
+      name = remoteMessage.data["name"];
+    }
     RemoteMessage? initalMessage = await FirebaseMessaging.instance.getInitialMessage();
     if(initalMessage!=null){
       Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
     }
     //app inbackground
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      remoteMessage = event;
+      id = remoteMessage.data["id"];
+      name = remoteMessage.data["name"];
       Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
     });
   }
