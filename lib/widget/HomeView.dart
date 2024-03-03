@@ -1,3 +1,4 @@
+import 'package:app/util/Util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class HomeViewState extends State<HomeView>{
             (value) =>
             setState(() {
               _futureWorkList = WorkDTO.getAll();
+              // Util.sendNotficate("Thông báo", "${data['name']} đã được thêm vào");
             })
     );
   }

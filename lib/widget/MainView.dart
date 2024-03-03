@@ -3,6 +3,7 @@ import 'package:app/widget/SettingView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../notification.dart';
 import '../util/dto/WorkController/WorkDTO.dart';
 import 'Detai.dart';
 
@@ -15,6 +16,11 @@ class MainView extends StatefulWidget{
 
 }
 class MainViewState extends State<MainView>{
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:app/message_screen.dart';
+import 'package:app/widget/MainView.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -107,7 +108,7 @@ class NotificationService{
   void handleMessage(BuildContext context){
       String id = remoteMessage.data["id"];
       String name = remoteMessage.data["name"];
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainView()));
   }
   void setupInteractMessage(BuildContext context) async {
     //app terminateding
@@ -120,14 +121,14 @@ class NotificationService{
     }
     RemoteMessage? initalMessage = await FirebaseMessaging.instance.getInitialMessage();
     if(initalMessage!=null){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainView()));
     }
     //app inbackground
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       remoteMessage = event;
       id = remoteMessage.data["id"];
       name = remoteMessage.data["name"];
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(id:id, name:name)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>MainView()));
     });
   }
 }

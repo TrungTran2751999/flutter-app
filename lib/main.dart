@@ -17,11 +17,10 @@ void main(List<String> args) async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomeScreen(),
+    home: LoginView(),
   ));
 }
 @pragma('vm:entry-point')
