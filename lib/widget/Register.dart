@@ -33,9 +33,9 @@ class Registers extends State<RegisterView>{
       );
     });
     var data = {
-      "userName": userName,
-      "passWord": passWord,
-      "name":name
+      "UserName": userName,
+      "Password": passWord,
+      "Name":name
     };
     NetWork.register(data).then((res){
       if(res=="Success"){

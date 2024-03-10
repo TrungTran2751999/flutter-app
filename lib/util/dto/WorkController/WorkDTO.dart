@@ -39,7 +39,11 @@ class WorkDTO{
   }
   static Future<String> create(Map<String, dynamic> data) async{
     var url = Uri.parse(StringUtil.GET_ALL_WORK);
-    var response = await http.post(url, body: data);
+    var datas = jsonEncode(data);
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var response = await http.post(url, body: datas, headers: headers);
     if(response.statusCode==200){
       return "SUCCESS";
     }else{
@@ -48,7 +52,12 @@ class WorkDTO{
   }
   static Future<String> update(Map<String, dynamic> data) async{
     var url = Uri.parse(StringUtil.UPDATE);
-    var response = await http.post(url, body: data);
+    var datas = jsonEncode(data);
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var response = await http.post(url, body: datas, headers: headers);
+
     if(response.statusCode==200){
       return "SUCCESS";
     }else{

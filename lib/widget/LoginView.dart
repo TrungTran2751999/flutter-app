@@ -45,9 +45,9 @@ class LoginViews extends State<LoginView>{
     });
     notificationService.getDeviceToken().then((value) {
       var data = {
-        "userName": userName,
-        "password": passWord,
-        "token": value
+        "UserName": userName,
+        "Password": passWord,
+        "DeviceToken": value
       };
       NetWork.login(data, value).then((res) {
         if (res) {
